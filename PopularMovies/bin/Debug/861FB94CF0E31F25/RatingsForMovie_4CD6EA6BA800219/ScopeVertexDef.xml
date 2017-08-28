@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScopeVertices helperAssembly="__ScopeCodeGen__.dll" signatureVersion="1">
+  <ScopeVertex id="SV1_Extract" cppReady="true" nativeOnly="true">
+    <operator id="Extract_0" uid="1" assemblyName="Microsoft.Analytics.Interfaces.dll" className="Microsoft.Analytics.Interfaces.IExtractor">
+      <input id="Extract_0" uid="1" schema="UserId:int,MovieId:int,Rating:int,Timestamp:double" inputIndex="0" numberOfInputs="ALL" />
+      <output id="Extract_0_Data0" uid="2" schema="UserId:int,MovieId:int,Rating:int,Timestamp:double" />
+    </operator>
+    <operator id="Process_1" uid="3" assemblyName="__ScopeCodeGen__.dll" className="SqlFilterTransformer_5">
+      <input id="Extract_0_Data0" uid="2" schema="UserId:int,MovieId:int,Rating:int,Timestamp:double" />
+      <output id="Process_1_Data0" uid="4" schema="Expr0:decimal?,Expr1:long" />
+    </operator>
+    <operator id="Process_2" uid="5" assemblyName="__ScopeCodeGen__.dll" className="SqlGrouper_1">
+      <input id="Process_1_Data0" uid="4" schema="Expr0:decimal?,Expr1:long" />
+      <output id="Process_2_Data0" uid="6" schema="Expr0:decimal?,Expr1:long" />
+    </operator>
+    <operator id="Process_3" uid="7" assemblyName="__ScopeCodeGen__.dll" className="SqlFilterTransformer_6">
+      <input id="Process_2_Data0" uid="6" schema="Expr0:decimal?,Expr1:long" />
+      <output id="Process_3_Data0" uid="8" schema="AvgRating:decimal?" />
+    </operator>
+    <operator id="Output_4" uid="9" assemblyName="Microsoft.Analytics.Interfaces.dll" className="Microsoft.Analytics.Interfaces.IOutputter">
+      <input id="Process_3_Data0" uid="8" schema="AvgRating:decimal?" />
+      <output id="SV1_Extract_out0" uid="9" schema="AvgRating:decimal?" outputIndex="0" numberOfOutputs="1" finalOutput="true" />
+    </operator>
+  </ScopeVertex>
+</ScopeVertices>

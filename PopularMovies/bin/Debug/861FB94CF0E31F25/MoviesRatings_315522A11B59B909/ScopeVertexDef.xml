@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScopeVertices helperAssembly="__ScopeCodeGen__.dll" signatureVersion="1">
+  <ScopeVertex id="SV1_Extract" cppReady="true">
+    <operator id="Extract_0" uid="1" assemblyName="PopularMoviesCommon.dll" className="PopularMoviesCommon.Extractors.MoviesInfoExtractor">
+      <input id="Extract_0" uid="1" schema="MovieId:int,Title:string,ReleaseDate:DateTime,VideoReleaseDate:DateTime?,IMDbURL:string,GenreUnknown:bool,GenreAction:bool,GenreAdventure:bool,GenreAnimation:bool,GenreChildrens:bool,GenreComedy:bool,GenreCrime:bool,GenreDocumentary:bool,GenreDrama:bool,GenreFantasy:bool,GenreNoire:bool,GenreHorror:bool,GenreMusical:bool,GenreMystery:bool,GenreRomance:bool,GenreSciFi:bool,GenreThriller:bool,GenreWar:bool,GenreWestern:bool" inputIndex="0" numberOfInputs="ALL" />
+      <output id="Extract_0_Data0" uid="2" schema="MovieId:int,Title:string,ReleaseDate:DateTime,VideoReleaseDate:DateTime?,IMDbURL:string,GenreUnknown:bool,GenreAction:bool,GenreAdventure:bool,GenreAnimation:bool,GenreChildrens:bool,GenreComedy:bool,GenreCrime:bool,GenreDocumentary:bool,GenreDrama:bool,GenreFantasy:bool,GenreNoire:bool,GenreHorror:bool,GenreMusical:bool,GenreMystery:bool,GenreRomance:bool,GenreSciFi:bool,GenreThriller:bool,GenreWar:bool,GenreWestern:bool" />
+    </operator>
+    <operator id="Process_1" uid="3" assemblyName="__ScopeCodeGen__.dll" className="SqlFilterTransformer_12">
+      <input id="Extract_0_Data0" uid="2" schema="MovieId:int,Title:string,ReleaseDate:DateTime,VideoReleaseDate:DateTime?,IMDbURL:string,GenreUnknown:bool,GenreAction:bool,GenreAdventure:bool,GenreAnimation:bool,GenreChildrens:bool,GenreComedy:bool,GenreCrime:bool,GenreDocumentary:bool,GenreDrama:bool,GenreFantasy:bool,GenreNoire:bool,GenreHorror:bool,GenreMusical:bool,GenreMystery:bool,GenreRomance:bool,GenreSciFi:bool,GenreThriller:bool,GenreWar:bool,GenreWestern:bool" />
+      <output id="Process_1_Data0" uid="4" schema="MovieId:int,Title:string" />
+    </operator>
+    <operator id="Process_2" uid="5" assemblyName="__ScopeCodeGen__.dll" className="ScopeSorter_1" args="-keys MovieId">
+      <input id="Process_1_Data0" uid="4" schema="MovieId:int,Title:string" />
+      <output id="SV1_Extract_out0" uid="6" schema="MovieId:int,Title:string" outputIndex="0" numberOfOutputs="1" />
+    </operator>
+  </ScopeVertex>
+  <ScopeVertex id="SV2_Extract" cppReady="true">
+    <operator id="Extract_3" uid="7" assemblyName="Microsoft.Analytics.Interfaces.dll" className="Microsoft.Analytics.Interfaces.IExtractor">
+      <input id="Extract_3" uid="7" schema="UserId:int,MovieId:int,Rating:int,Timestamp:double" inputIndex="0" numberOfInputs="ALL" />
+      <output id="Extract_3_Data0" uid="8" schema="UserId:int,MovieId:int,Rating:int,Timestamp:double" />
+    </operator>
+    <operator id="Process_4" uid="9" assemblyName="__ScopeCodeGen__.dll" className="SqlFilterTransformer_13">
+      <input id="Extract_3_Data0" uid="8" schema="UserId:int,MovieId:int,Rating:int,Timestamp:double" />
+      <output id="Process_4_Data0" uid="10" schema="MovieId:int,partialagg2__:long,partialagg3__:decimal?,partialagg4__:long" />
+    </operator>
+    <operator id="Process_5" uid="11" assemblyName="__ScopeCodeGen__.dll" className="ScopeHashGrouper_1">
+      <input id="Process_4_Data0" uid="10" schema="MovieId:int,partialagg2__:long,partialagg3__:decimal?,partialagg4__:long" />
+      <output id="Process_5_Data0" uid="12" schema="MovieId:int,partialagg2__:long,partialagg3__:decimal?,partialagg4__:long" />
+    </operator>
+    <operator id="Process_6" uid="13" assemblyName="__ScopeCodeGen__.dll" className="ScopeSorter_2" args="-keys MovieId">
+      <input id="Process_5_Data0" uid="12" schema="MovieId:int,partialagg2__:long,partialagg3__:decimal?,partialagg4__:long" />
+      <output id="Process_6_Data0" uid="14" schema="MovieId:int,partialagg2__:long,partialagg3__:decimal?,partialagg4__:long" />
+    </operator>
+    <operator id="Process_7" uid="15" assemblyName="__ScopeCodeGen__.dll" className="SqlGrouper_1">
+      <input id="Process_6_Data0" uid="14" schema="MovieId:int,partialagg2__:long,partialagg3__:decimal?,partialagg4__:long" />
+      <output id="Process_7_Data0" uid="16" schema="MovieId:int,partialagg2__:long,partialagg3__:decimal?,partialagg4__:long" />
+    </operator>
+    <operator id="Process_8" uid="17" assemblyName="__ScopeCodeGen__.dll" className="SqlFilterTransformer_14">
+      <input id="Process_7_Data0" uid="16" schema="MovieId:int,partialagg2__:long,partialagg3__:decimal?,partialagg4__:long" />
+      <output id="SV2_Extract_out0" uid="18" schema="NumberOfRatings:long?,AvgRating:decimal,MovieId1:int" outputIndex="0" numberOfOutputs="1" />
+    </operator>
+  </ScopeVertex>
+  <ScopeVertex id="SV3_Combine" cppReady="true" nativeOnly="true">
+    <operator id="Join_9" uid="19" assemblyName="__ScopeCodeGen__.dll" className="ScopeCombineWrapper_1" args="-key MovieId|MovieId1">
+      <input id="SV1_Extract_out0" uid="6" schema="MovieId:int,Title:string" inputIndex="0" numberOfInputs="1" />
+      <input id="SV2_Extract_out0" uid="18" schema="NumberOfRatings:long?,AvgRating:decimal,MovieId1:int" inputIndex="1" numberOfInputs="1" />
+      <output id="Join_9_Data0" uid="20" schema="MovieId:int,Title:string,NumberOfRatings:long?,AvgRating:decimal" />
+    </operator>
+    <operator id="Process_10" uid="21" assemblyName="__ScopeCodeGen__.dll" className="SqlFilterTransformer_15">
+      <input id="Join_9_Data0" uid="20" schema="MovieId:int,Title:string,NumberOfRatings:long?,AvgRating:decimal" />
+      <output id="Process_10_Data0" uid="22" schema="Title:string,NumberOfRatings:long?,AvgRating:decimal,InfoMovieId:int" />
+    </operator>
+    <operator id="Process_11" uid="23" assemblyName="__ScopeCodeGen__.dll" className="ScopeSorter_3" args="-keys AvgRating#_DESC">
+      <input id="Process_10_Data0" uid="22" schema="Title:string,NumberOfRatings:long?,AvgRating:decimal,InfoMovieId:int" />
+      <output id="Process_11_Data0" uid="24" schema="Title:string,NumberOfRatings:long?,AvgRating:decimal,InfoMovieId:int" />
+    </operator>
+    <operator id="Process_12" uid="25" assemblyName="__ScopeCodeGen__.dll" className="SqlFilterTransformer_16">
+      <input id="Process_11_Data0" uid="24" schema="Title:string,NumberOfRatings:long?,AvgRating:decimal,InfoMovieId:int" />
+      <output id="Process_12_Data0" uid="26" schema="InfoMovieId:int,Title:string,NumberOfRatings:long?,AvgRating:decimal" />
+    </operator>
+    <operator id="Output_13" uid="27" assemblyName="Microsoft.Analytics.Interfaces.dll" className="Microsoft.Analytics.Interfaces.IOutputter">
+      <input id="Process_12_Data0" uid="26" schema="InfoMovieId:int,Title:string,NumberOfRatings:long?,AvgRating:decimal" />
+      <output id="SV3_Combine_out0" uid="27" schema="InfoMovieId:int,Title:string,NumberOfRatings:long?,AvgRating:decimal" outputIndex="0" numberOfOutputs="1" finalOutput="true" />
+    </operator>
+  </ScopeVertex>
+</ScopeVertices>

@@ -1,0 +1,97 @@
+// Auto-generated header code
+
+// Auto-generated header code ended
+
+// User script
+REFERENCE ASSEMBLY master.PopularMoviesCommon;
+
+//USING x = PopularMoviesCommon.CustomFunctions;
+USING y = PopularMoviesCommon.Extractors.MoviesInfoExtractor;
+
+DECLARE @movieRatingsFilePath = "/u.data";
+DECLARE @movieDataFilePath = "/u100k.item";
+
+// extract all ratings data from file
+@moviesRatings =
+    EXTRACT UserId int,
+            MovieId int,
+            Rating int,
+			Timestamp double
+    FROM @movieRatingsFilePath
+    USING Extractors.Tsv();
+
+// count ratings per movie
+@ratingsCountPerMovie =
+    SELECT MovieId,
+           COUNT( * ) AS NumberOfRatings,
+		   AVG((decimal) Rating) AS AvgRating
+    FROM @moviesRatings
+    GROUP BY MovieId;
+
+@ratingsCountPerMovie =
+    SELECT MovieId,
+           NumberOfRatings,
+           Math.Round((decimal)AvgRating, 2) AS AvgRating
+    FROM @ratingsCountPerMovie;
+
+//@timestampParsed =
+//    SELECT UserId,
+//           MovieId,
+//           Rating,
+////           PopularMovies.CustomFunctions.ParseUnixTimestampCodeBehind(Timestamp) AS ParsedUnixTimestamp
+//          x.UnixTimeStampToDateTime(Timestamp).ToString("yyyy.MM.dd HH:mm") AS ParsedUnixTimestamp
+//    FROM @moviesRatings;
+
+//get movies info
+@moviesInfo =
+    EXTRACT MovieId int,
+            Title string,
+            ReleaseDate DateTime,
+            VideoReleaseDate DateTime?,
+            IMDbURL string,
+            GenreUnknown bool,
+            GenreAction bool,
+            GenreAdventure bool,
+            GenreAnimation bool,
+            GenreChildrens bool,
+            GenreComedy bool,
+            GenreCrime bool,
+            GenreDocumentary bool,
+            GenreDrama bool,
+            GenreFantasy bool,
+            GenreNoire bool,
+            GenreHorror bool,
+            GenreMusical bool,
+            GenreMystery bool,
+            GenreRomance bool,
+            GenreSciFi bool,
+            GenreThriller bool,
+            GenreWar bool,
+            GenreWestern bool
+    FROM @movieDataFilePath
+    USING new PopularMoviesCommon.Extractors.MoviesInfoExtractor(colDelim: '|');
+
+@moviesInfoWithRatings =
+    SELECT i.MovieId AS InfoMovieId, 
+		   i.Title, 
+		   r.NumberOfRatings, 
+		   r.AvgRating
+    FROM @moviesInfo AS i
+         INNER JOIN
+         (
+         SELECT MovieId AS MovieId,
+                NumberOfRatings,
+				AvgRating
+         FROM @ratingsCountPerMovie
+               ) AS r
+         ON i.MovieId == r.MovieId;
+
+OUTPUT @moviesInfoWithRatings
+TO "/moviesInfoWithRatings.csv"
+ORDER BY AvgRating DESC //FETCH 10 ROWS
+USING Outputters.Csv();
+// User script ended
+// Auto-generated footer code
+
+// Auto-generated footer code ended
+

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScriptAndGraph GraphType="VertexCommands">
+  <Vertices count="3">
+    <Vertex index="1" command="-scopeVertex SV1_Extract  -i C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\u100k.item  -o C:\Playground\DataLake\PopularMovies\PopularMovies\bin\Debug\861FB94CF0E31F25\_Temp\MoviesRatings_315522A11B59B909\scopetmpfile._SV1_Extract_out0" />
+    <Vertex index="2" command="-scopeVertex SV2_Extract  -i C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\u.data  -o C:\Playground\DataLake\PopularMovies\PopularMovies\bin\Debug\861FB94CF0E31F25\_Temp\MoviesRatings_315522A11B59B909\scopetmpfile._SV2_Extract_out0" />
+    <Vertex index="3" command="-scopeVertex SV3_Combine  -i C:\Playground\DataLake\PopularMovies\PopularMovies\bin\Debug\861FB94CF0E31F25\_Temp\MoviesRatings_315522A11B59B909\scopetmpfile._SV1_Extract_out0 -ichannel SV1_Extract_out0 -i C:\Playground\DataLake\PopularMovies\PopularMovies\bin\Debug\861FB94CF0E31F25\_Temp\MoviesRatings_315522A11B59B909\scopetmpfile._SV2_Extract_out0 -ichannel SV2_Extract_out0  -o C:\Playground\DataLake\PopularMovies\PopularMovies\bin\Debug\861FB94CF0E31F25\_Temp\MoviesRatings_315522A11B59B909\scopetmpfile._SV3_Combine_out0(WITH_HEADER)" />
+    <Vertex command="-concatenate -i C:\Playground\DataLake\PopularMovies\PopularMovies\bin\Debug\861FB94CF0E31F25\_Temp\MoviesRatings_315522A11B59B909\scopetmpfile._SV3_Combine_out0 -o C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\moviesInfoWithRatings.csv" />
+  </Vertices>
+  <Outputs>
+    <Output path="C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\moviesInfoWithRatings.csv" isBinary="False" schema="InfoMovieId:int,Title:string,NumberOfRatings:long?,AvgRating:decimal" />
+  </Outputs>
+  <graph serveForThirdParty="True" JsonErrors="True" JobType="BatchSqlIp" MaxPercentInputUnavailability="0" vertexExecutable="scopehost.exe" BroadcastCopyThroughCommandLine="ScopeEngine.dll -scopeVertex SV_CopyThrough">
+    <process id="SV1_Extract" command="ScopeEngine.dll -scopeVertex SV1_Extract" managedMemorySize="851443712" nativeIOMemorySize="83886086" nativeExecutionMemorySize="4982833146" DummyVertexOptimization="AllInputsEmptyImpliesOutputsEmpty|RunAtLeastOneVertex" trustedVertex="True">
+      <input id="Extract_0[ALL]" streamSize="236344">
+        <cosmosStream cosmosPath="C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\u100k.item" streamSize="236344" />
+      </input>
+      <output id="SV1_Extract_out0" />
+    </process>
+    <process id="SV2_Extract" command="ScopeEngine.dll -scopeVertex SV2_Extract" managedMemorySize="322961408" nativeIOMemorySize="150994946" nativeExecutionMemorySize="5444206590" DummyVertexOptimization="AllInputsEmptyImpliesOutputsEmpty|RunAtLeastOneVertex" trustedVertex="True">
+      <input id="Extract_3[ALL]" streamSize="1979173">
+        <cosmosStream cosmosPath="C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\u.data" streamSize="1979173" />
+      </input>
+      <output id="SV2_Extract_out0" />
+    </process>
+    <process id="SV3_Combine" command="ScopeEngine.dll -scopeVertex SV3_Combine" nativeOnly="true" managedMemorySize="0" nativeIOMemorySize="134217736" nativeExecutionMemorySize="5783945208" DummyVertexOptimization="AllInputsEmptyImpliesOutputsEmpty|RunAtLeastOneVertex" trustedVertex="True">
+      <input id="SV1_Extract_out0" />
+      <input id="SV2_Extract_out0" />
+      <output id="SV3_Combine_out0" cosmosStream="C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\moviesInfoWithRatings.csv" />
+    </process>
+  </graph>
+  <Scopescript>// Auto-generated header code
+
+// Auto-generated header code ended
+
+// User script
+REFERENCE ASSEMBLY master.PopularMoviesCommon;
+
+//USING x = PopularMoviesCommon.CustomFunctions;
+USING y = PopularMoviesCommon.Extractors.MoviesInfoExtractor;
+
+DECLARE @movieRatingsFilePath = "/u.data";
+DECLARE @movieDataFilePath = "/u100k.item";
+
+// extract all ratings data from file
+@moviesRatings =
+    EXTRACT UserId int,
+            MovieId int,
+            Rating int,
+			Timestamp double
+    FROM @movieRatingsFilePath
+    USING Extractors.Tsv();
+
+// count ratings per movie
+@ratingsCountPerMovie =
+    SELECT MovieId,
+           COUNT( * ) AS NumberOfRatings,
+		   AVG((decimal) Rating) AS AvgRating
+    FROM @moviesRatings
+    GROUP BY MovieId;
+
+@ratingsCountPerMovie =
+    SELECT MovieId,
+           NumberOfRatings,
+           Math.Round((decimal)AvgRating, 2) AS AvgRating
+    FROM @ratingsCountPerMovie;
+
+//@timestampParsed =
+//    SELECT UserId,
+//           MovieId,
+//           Rating,
+////           PopularMovies.CustomFunctions.ParseUnixTimestampCodeBehind(Timestamp) AS ParsedUnixTimestamp
+//          x.UnixTimeStampToDateTime(Timestamp).ToString("yyyy.MM.dd HH:mm") AS ParsedUnixTimestamp
+//    FROM @moviesRatings;
+
+//get movies info
+@moviesInfo =
+    EXTRACT MovieId int,
+            Title string,
+            ReleaseDate DateTime,
+            VideoReleaseDate DateTime?,
+            IMDbURL string,
+            GenreUnknown bool,
+            GenreAction bool,
+            GenreAdventure bool,
+            GenreAnimation bool,
+            GenreChildrens bool,
+            GenreComedy bool,
+            GenreCrime bool,
+            GenreDocumentary bool,
+            GenreDrama bool,
+            GenreFantasy bool,
+            GenreNoire bool,
+            GenreHorror bool,
+            GenreMusical bool,
+            GenreMystery bool,
+            GenreRomance bool,
+            GenreSciFi bool,
+            GenreThriller bool,
+            GenreWar bool,
+            GenreWestern bool
+    FROM @movieDataFilePath
+    USING new PopularMoviesCommon.Extractors.MoviesInfoExtractor(colDelim: '|');
+
+@moviesInfoWithRatings =
+    SELECT i.MovieId AS InfoMovieId, 
+		   i.Title, 
+		   r.NumberOfRatings, 
+		   r.AvgRating
+    FROM @moviesInfo AS i
+         INNER JOIN
+         (
+         SELECT MovieId AS MovieId,
+                NumberOfRatings,
+				AvgRating
+         FROM @ratingsCountPerMovie
+               ) AS r
+         ON i.MovieId == r.MovieId;
+
+OUTPUT @moviesInfoWithRatings
+TO "/moviesInfoWithRatings.csv"
+ORDER BY AvgRating DESC //FETCH 10 ROWS
+USING Outputters.Csv();
+// User script ended
+// Auto-generated footer code
+
+// Auto-generated footer code ended
+
+</Scopescript>
+  <Optimization succeeded="true" time="00:00:00.4546160" latency="-1" totalCost="-1" />
+  <ScopeVertexAnnotations>
+    <ScopeVertex name="SV1_Extract">
+      <Operation annotation="EXTRACT USING MoviesInfoExtractor" />
+    </ScopeVertex>
+    <ScopeVertex name="SV2_Extract">
+      <Operation annotation="EXTRACT USING IExtractor" />
+    </ScopeVertex>
+    <ScopeVertex name="SV3_Combine">
+      <Operation annotation="OUTPUT USING IOutputter" />
+    </ScopeVertex>
+  </ScopeVertexAnnotations>
+</ScriptAndGraph>

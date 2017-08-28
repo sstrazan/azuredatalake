@@ -1,0 +1,64 @@
+﻿{
+"CompilerPlanStart":"8\/27\/2017 9:10:34 PM"
+},
+{
+"Settings":"-c++ -mp -pdb Partial -OUTPUT_PATH C:\\Users\\slaven.strazanac\\AppData\\Local\\USQLDataRoot -cosmosCluster localhost -apEnvironment Default -apCluster localhost -Off ForceShadowCopy -On ADL -Off Sirius -On SQLIP -Off SQLIPSQLProxy -Off SQLIPSQLProxyNative -buckets 1 -SplitPartitionThreshold 52428800 -ClientVersion 10.2.2.0"
+}{
+"\/\/ Auto-generated header code\/\/ Auto-generated header code ended\/\/ User scriptREFERENCE AS":
+{
+"NodeName":"ReferenceAssemblyStatement"
+}{
+"Name":"master.PopularMoviesCommon"
+}},
+{
+"\/\/USING x = PopularMoviesCommon.CustomFunctions;USING y = PopularMoviesCommon.Extractors.Movie":
+{
+"NodeName":"UsingStatement"
+}},
+{
+"DECLARE @movieRatingsFilePath = \"\/u.data\"":
+{
+"NodeName":"DeclareVariableStatement"
+}{
+"Name":"@movieRatingsFilePath"
+}},
+{
+"DECLARE @movieDataFilePath = \"\/u100k.item\"":
+{
+"NodeName":"DeclareVariableStatement"
+}{
+"Name":"@movieDataFilePath"
+}},
+{
+"    EXTRACT UserId int,            MovieId int,            Rating int,\t\t\tTimestamp double ":
+{
+"NodeName":"QueryStatement"
+}},
+{
+"    SELECT MovieId,           COUNT( * ) AS NumberOfRatings,\t\t   AVG((decimal) Rating) AS AvgR":
+{
+"NodeName":"QueryStatement"
+}},
+{
+"    SELECT MovieId,           NumberOfRatings,           Math.Round((decimal)AvgRating, 2) AS ":
+{
+"NodeName":"QueryStatement"
+}},
+{
+"    EXTRACT MovieId int,            Title string,            ReleaseDate DateTime,          ":
+{
+"NodeName":"QueryStatement"
+}},
+{
+"    SELECT i.MovieId AS InfoMovieId, \t\t   i.Title, \t\t   r.NumberOfRatings, \t\t   r.AvgRating\r":
+{
+"NodeName":"QueryStatement"
+}},
+{
+"OUTPUT @moviesInfoWithRatingsTO \"\/moviesInfoWithRatings.csv\"ORDER BY AvgRating DESC \/\/FETCH ":
+{
+"NodeName":"OutputStatement"
+}},
+{
+"CompilerPlanEnd":"8\/27\/2017 9:10:34 PM"
+}

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CSSRelatedInfo>
+  <OptimizerPlanInfo signatureVersion="1">
+    <TableScan present="True" occurrence="2" />
+    <PartitionSeek present="False" occurrence="0" />
+    <PartitionRange present="False" occurrence="0" />
+    <IndexSeek present="False" occurrence="0" />
+    <IndexRange present="False" occurrence="0" />
+    <Join present="True" occurrence="1" />
+    <GroupByAgg present="True" occurrence="2" />
+    <UDProcessor present="False" occurrence="0" />
+    <UDReducer present="False" occurrence="0" />
+    <UDCombiner present="False" occurrence="0" />
+    <UDMultiProcessor present="False" occurrence="0" />
+    <Top present="False" occurrence="0" />
+    <Costs>
+      <ExtractCardinality>67449.5833333333</ExtractCardinality>
+      <InputSize>2215517</InputSize>
+      <OutputCardinality>13194.4866666667</OutputCardinality>
+      <NumTable>2</NumTable>
+      <DataTransferVolume>0</DataTransferVolume>
+      <Latency>-1</Latency>
+      <TotalCost>-1</TotalCost>
+      <EstimatedNumEdges>0</EstimatedNumEdges>
+    </Costs>
+    <OptimizerTrees>
+<InputTree>
+    <LogOp Id="LogOp_Output" Table="C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\moviesInfoWithRatings.csv" XMode="All" SortColumn="AvgRating DESC" Out="InfoMovieId,Title,NumberOfRatings,AvgRating" Udf="IOutputter">
+      <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+      <LogOp Id="LogOp_OrderBy" SortColumn="AvgRating DESC">
+        <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+        <LogOp Id="LogOp_RestrRemap" Remove="MovieId,ReleaseDate,VideoReleaseDate,IMDbURL,GenreUnknown,GenreAction,GenreAdventure,GenreAnimation,GenreChildrens,GenreComedy..." Remap="InfoMovieId#MovieId">
+          <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+          <LogOp Id="LogOp_Join">
+            <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+            <LogOp Id="LogOp_Extract" Table="C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\u100k.item" XMode="Serial" Udf="MoviesInfoExtractor">
+              <OpInfo><TableGroupProperties Grp="0.0" Remotable="False" Card="1477.15" AvgRowLength="55"/></OpInfo>
+            </LogOp>
+            <LogOp Id="LogOp_RestrRemap" Remove="MovieId" Remap="MovieId1#MovieId">
+              <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+              <LogOp Id="LogOp_Project" Remove="AvgRating">
+                <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                <LogOp Id="LogOp_RestrRemap" Remove="NumberOfRatings,NumberOfRatings1" Remap="NumberOfRatings#NumberOfRatings1">
+                  <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                  <LogOp Id="LogOp_Project">
+                    <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                    <LogOp Id="LogOp_GbAgg" AggregateType="Normal" Out="NumberOfRatings,AvgRating,MovieId" By="MovieId">
+                      <OpInfo><TableGroupProperties Grp="Unknown" Remotable="False"/></OpInfo>
+                      <LogOp Id="LogOp_Extract" Table="C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\u.data" XMode="Serial" Udf="IExtractor">
+                        <OpInfo><TableGroupProperties Grp="1.0" Remotable="False" Card="65972.4" AvgRowLength="20"/></OpInfo>
+                      </LogOp>
+                      <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                        <AncOp Id="AncOp_PrjEl" Column="NumberOfRatings"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                          <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="3.0"/></OpInfo>
+                            <ScaOp Id="ScaOp_Const" TI="Int" Value="1" Parameter="0"><OpInfo><ScalarGroupProperties Grp="2.0"/></OpInfo>
+                            </ScaOp>
+                          </ScaOp>
+                        </AncOp>
+                        <AncOp Id="AncOp_PrjEl" Column="AvgRating"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                          <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAvg" Distinct="False"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+                            <ScaOp Id="ScaOp_Convert"><OpInfo><ScalarGroupProperties Grp="6.0"/></OpInfo>
+                              <ScaOp Id="ScaOp_Identifier" Column="Rating"><OpInfo><ScalarGroupProperties Grp="5.0"/></OpInfo>
+                              </ScaOp>
+                            </ScaOp>
+                          </ScaOp>
+                        </AncOp>
+                      </AncOp>
+                    </LogOp>
+                    <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="20.0"/></OpInfo>
+                      <AncOp Id="AncOp_PrjEl" Column="NumberOfRatings1"><OpInfo><ScalarGroupProperties Grp="19.0"/></OpInfo>
+                        <ScaOp Id="ScaOp_Convert"><OpInfo><ScalarGroupProperties Grp="18.0"/></OpInfo>
+                          <ScaOp Id="ScaOp_Identifier" Column="NumberOfRatings"><OpInfo><ScalarGroupProperties Grp="17.0"/></OpInfo>
+                          </ScaOp>
+                        </ScaOp>
+                      </AncOp>
+                    </AncOp>
+                  </LogOp>
+                </LogOp>
+                <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="25.0"/></OpInfo>
+                  <AncOp Id="AncOp_PrjEl" Column="AvgRating"><OpInfo><ScalarGroupProperties Grp="24.0"/></OpInfo>
+                    <ScaOp Id="ScaOp_Udf" Udf="Math.Round((decimal)AvgRating, 2)" UsedColumn="AvgRating"><OpInfo><ScalarGroupProperties Grp="23.0"/></OpInfo>
+                    </ScaOp>
+                  </AncOp>
+                </AncOp>
+              </LogOp>
+            </LogOp>
+            <ScaOp Id="ScaOp_Comp" CompOp="x_cmpEq"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+              <ScaOp Id="ScaOp_Identifier" Column="MovieId"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+              </ScaOp>
+              <ScaOp Id="ScaOp_Identifier" Column="MovieId1"><OpInfo><ScalarGroupProperties Grp="Unknown"/></OpInfo>
+              </ScaOp>
+            </ScaOp>
+          </LogOp>
+        </LogOp>
+      </LogOp>
+    </LogOp>
+</InputTree>
+<OutputTree>
+    <PhyOp Id="PhyOp_Output" Table="C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\moviesInfoWithRatings.csv" XMode="Serial" SortColumn="AvgRating DESC" Out="InfoMovieId,Title,NumberOfRatings,AvgRating" Udf="IOutputter">
+      <OpInfo><TableGroupProperties Grp="34.1" Remotable="False" Card="13194.5" AvgRowLength="36" PrtnSkewFactor="1" HT="10265545055650213525:228::5:9269266666959291473" HTS="8321348815723421140"/><Costs TotalCosts="9.93909" BubbleCost="9.93909" BubblePartitions="398"/></OpInfo>
+      <PhyOp Id="PhyOp_NOP" XMode="Serial" SortColumn="AvgRating DESC">
+        <OpInfo><TableGroupProperties Grp="33.1" Remotable="False" Card="13194.5" AvgRowLength="36" PrtnSkewFactor="1" HT="9269266666959291473:226::4:17086111744558488470" HTS="16236403553410158651"/><Costs TotalCosts="6.70069" BubbleCost="6.70069" BubblePartitions="398"/></OpInfo>
+        <PhyOp Id="PhyOp_Sort" SortColumn="AvgRating DESC">
+          <OpInfo><TableGroupProperties Grp="32.2" Remotable="False" Card="13194.5" AvgRowLength="36" PrtnSkewFactor="1" HT="17086111744558488470:120::3:14330653869259544199" HTS="18359954923619016802"/><Costs TotalCosts="6.70069" BubbleCost="6.70069" BubblePartitions="398"/></OpInfo>
+          <PhyOp Id="PhyOp_RestrRemap">
+            <OpInfo><TableGroupProperties Grp="32.3" Remotable="False" Card="13194.5" AvgRowLength="36" PrtnSkewFactor="1" HT="17086111744558488470:120::3:14330653869259544199" HTS="18359954923619016802"/><Costs TotalCosts="6.66739" BubbleCost="6.66739" BubblePartitions="398"/></OpInfo>
+            <PhyOp Id="PhyOp_MergeJoin" JoinType="x_jtInner" ParallelJoinType="Serial" LeftKey="MovieId ASC" RightKey="MovieId1 ASC">
+              <OpInfo><TableGroupProperties Grp="31.2" Remotable="False" Card="13194.5" AvgRowLength="36" PrtnSkewFactor="1" HT="14330653869259544199:30::2:8501676061152997523" HTS="4101573335147701944"/><Costs TotalCosts="6.66739" BubbleCost="6.66739" BubblePartitions="398"/></OpInfo>
+              <PhyOp Id="PhyOp_Sort" SortColumn="MovieId ASC">
+                <OpInfo><TableGroupProperties Grp="0.2" Remotable="False" Card="1477.15" AvgRowLength="12" PrtnSkewFactor="1" HT="6407119979526908093:115::0:0" HTS="1968538524187249624"/><Costs TotalCosts="5.19068" BubbleCost="5.19068" BubblePartitions="399"/></OpInfo>
+                <PhyOp Id="PhyOp_Extract" Table="C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\u100k.item" XMode="Serial" Udf="MoviesInfoExtractor">
+                  <OpInfo><TableGroupProperties Grp="0.3" Remotable="False" Card="1477.15" AvgRowLength="12" PrtnSkewFactor="1" HT="6407119979526908093:115::0:0" HTS="1968538524187249624"/><Costs TotalCosts="5.18772" BubbleCost="5.18772" BubblePartitions="399"/></OpInfo>
+                </PhyOp>
+              </PhyOp>
+              <PhyOp Id="PhyOp_RestrRemap">
+                <OpInfo><TableGroupProperties Grp="27.1" Remotable="False" Card="16493.1" AvgRowLength="28" PrtnSkewFactor="1" HT="12183528590908449626:120::4:15731540552343988151" HTS="12486102109442302722"/><Costs TotalCosts="6.65804" BubbleCost="6.65804" BubblePartitions="399"/></OpInfo>
+                <PhyOp Id="PhyOp_ComputeScalar">
+                  <OpInfo><TableGroupProperties Grp="26.1" Remotable="False" Card="16493.1" AvgRowLength="28" PrtnSkewFactor="1" HT="15731540552343988151:212::3:1761285848671797541" HTS="18211835560250557048"/><Costs TotalCosts="6.65804" BubbleCost="6.65804" BubblePartitions="399"/></OpInfo>
+                  <PhyOp Id="PhyOp_RestrRemap">
+                    <OpInfo><TableGroupProperties Grp="22.1" Remotable="False" Card="16493.1" AvgRowLength="28" PrtnSkewFactor="1" HT="6033071141889953880:120::5:17319690557460621311" HTS="4292388136972886257"/><Costs TotalCosts="6.65639" BubbleCost="6.65639" BubblePartitions="399"/></OpInfo>
+                    <PhyOp Id="PhyOp_ComputeScalar">
+                      <OpInfo><TableGroupProperties Grp="21.1" Remotable="False" Card="16493.1" AvgRowLength="28" PrtnSkewFactor="1" HT="17319690557460621311:212::4:16765439013544383208" HTS="5076357477934014052"/><Costs TotalCosts="6.65639" BubbleCost="6.65639" BubblePartitions="399"/></OpInfo>
+                      <PhyOp Id="PhyOp_ComputeScalar">
+                        <OpInfo><TableGroupProperties Grp="16.1" Remotable="False" Card="16493.1" AvgRowLength="28" PrtnSkewFactor="1" HT="14881401497270676463:212::3:9162596230948751410" HTS="11232202319521841110"/><Costs TotalCosts="6.65474" BubbleCost="6.65474" BubblePartitions="399"/></OpInfo>
+                        <PhyOp Id="PhyOp_StreamGbAgg" AggregateType="Global" GroupOnly="False" On="MovieId ASC" SortColumn="MovieId ASC">
+                          <OpInfo><TableGroupProperties Grp="12.2" Remotable="False" Card="16493.1" AvgRowLength="36" PrtnSkewFactor="1" HT="16412101129790718915:109:0:5:14938137646606099917" HTS="681148103045091918"/><Costs TotalCosts="6.65309" BubbleCost="6.65309" BubblePartitions="399"/></OpInfo>
+                          <PhyOp Id="PhyOp_Sort" SortColumn="MovieId ASC">
+                            <OpInfo><TableGroupProperties Grp="39.2" Remotable="False" Card="32986.2" AvgRowLength="36" PrtnSkewFactor="1" HT="12368536447953048028:109:1:5:15886154448829907596" HTS="9467774320047202477"/><Costs TotalCosts="6.63777" BubbleCost="6.63777" BubblePartitions="399"/></OpInfo>
+                            <PhyOp Id="PhyOp_HashGbAgg" AggregateType="Local" By="MovieId">
+                              <OpInfo><TableGroupProperties Grp="39.3" Remotable="False" Card="32986.2" AvgRowLength="36" PrtnSkewFactor="1" HT="12368536447953048028:109:1:5:15886154448829907596" HTS="9467774320047202477"/><Costs TotalCosts="6.5479" BubbleCost="6.5479" BubblePartitions="399"/></OpInfo>
+                              <PhyOp Id="PhyOp_Extract" Table="C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\u.data" XMode="Serial" Udf="IExtractor">
+                                <OpInfo><TableGroupProperties Grp="1.3" Remotable="False" Card="65972.4" AvgRowLength="8" PrtnSkewFactor="1" HT="1874920954810147450:115::0:0" HTS="18233220745887465450"/><Costs TotalCosts="6.51469" BubbleCost="6.51469" BubblePartitions="399"/></OpInfo>
+                              </PhyOp>
+                              <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="38.0"/></OpInfo>
+                                <AncOp Id="AncOp_PrjEl" Column="partialagg2__"><OpInfo><ScalarGroupProperties Grp="35.0"/></OpInfo>
+                                  <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="3.0"/></OpInfo>
+                                    <ScaOp Id="ScaOp_Const" TI="Int" Value="1" Parameter="0"><OpInfo><ScalarGroupProperties Grp="2.0"/></OpInfo>
+                                    </ScaOp>
+                                  </ScaOp>
+                                </AncOp>
+                                <AncOp Id="AncOp_PrjEl" Column="partialagg3__"><OpInfo><ScalarGroupProperties Grp="36.0"/></OpInfo>
+                                  <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccum" Distinct="False"><OpInfo><ScalarGroupProperties Grp="7.0"/></OpInfo>
+                                    <ScaOp Id="ScaOp_Convert"><OpInfo><ScalarGroupProperties Grp="6.0"/></OpInfo>
+                                      <ScaOp Id="ScaOp_Identifier" Column="Rating"><OpInfo><ScalarGroupProperties Grp="5.0"/></OpInfo>
+                                      </ScaOp>
+                                    </ScaOp>
+                                  </ScaOp>
+                                </AncOp>
+                                <AncOp Id="AncOp_PrjEl" Column="partialagg4__"><OpInfo><ScalarGroupProperties Grp="37.0"/></OpInfo>
+                                  <ScaOp Id="ScaOp_AggFunc" AggregateName="stopCountBig" Distinct="False"><OpInfo><ScalarGroupProperties Grp="9.0"/></OpInfo>
+                                    <ScaOp Id="ScaOp_Convert"><OpInfo><ScalarGroupProperties Grp="6.0"/></OpInfo>
+                                      <ScaOp Id="ScaOp_Identifier" Column="Rating"><OpInfo><ScalarGroupProperties Grp="5.0"/></OpInfo>
+                                      </ScaOp>
+                                    </ScaOp>
+                                  </ScaOp>
+                                </AncOp>
+                              </AncOp>
+                            </PhyOp>
+                          </PhyOp>
+                          <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="49.0"/></OpInfo>
+                            <AncOp Id="AncOp_PrjEl" Column="NumberOfRatings"><OpInfo><ScalarGroupProperties Grp="42.0"/></OpInfo>
+                              <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccumUnchecked" Distinct="False"><OpInfo><ScalarGroupProperties Grp="41.0"/></OpInfo>
+                                <ScaOp Id="ScaOp_Identifier" Column="partialagg2__"><OpInfo><ScalarGroupProperties Grp="40.0"/></OpInfo>
+                                </ScaOp>
+                              </ScaOp>
+                            </AncOp>
+                            <AncOp Id="AncOp_PrjEl" Column="Expr0"><OpInfo><ScalarGroupProperties Grp="45.0"/></OpInfo>
+                              <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccum" Distinct="False"><OpInfo><ScalarGroupProperties Grp="44.0"/></OpInfo>
+                                <ScaOp Id="ScaOp_Identifier" Column="partialagg3__"><OpInfo><ScalarGroupProperties Grp="43.0"/></OpInfo>
+                                </ScaOp>
+                              </ScaOp>
+                            </AncOp>
+                            <AncOp Id="AncOp_PrjEl" Column="Expr1"><OpInfo><ScalarGroupProperties Grp="48.0"/></OpInfo>
+                              <ScaOp Id="ScaOp_AggFunc" AggregateName="stopAccumUnchecked" Distinct="False"><OpInfo><ScalarGroupProperties Grp="47.0"/></OpInfo>
+                                <ScaOp Id="ScaOp_Identifier" Column="partialagg4__"><OpInfo><ScalarGroupProperties Grp="46.0"/></OpInfo>
+                                </ScaOp>
+                              </ScaOp>
+                            </AncOp>
+                          </AncOp>
+                        </PhyOp>
+                        <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="15.0"/></OpInfo>
+                          <AncOp Id="AncOp_PrjEl" Column="AvgRating"><OpInfo><ScalarGroupProperties Grp="14.0"/></OpInfo>
+                            <ScaOp Id="ScaOp_Udf" Udf="Expr1 == 0 ? (decimal?)null : Expr0 / Expr1" UsedColumn="Expr0,Expr1"><OpInfo><ScalarGroupProperties Grp="13.0"/></OpInfo>
+                            </ScaOp>
+                          </AncOp>
+                        </AncOp>
+                      </PhyOp>
+                      <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="20.0"/></OpInfo>
+                        <AncOp Id="AncOp_PrjEl" Column="NumberOfRatings1"><OpInfo><ScalarGroupProperties Grp="19.0"/></OpInfo>
+                          <ScaOp Id="ScaOp_Convert"><OpInfo><ScalarGroupProperties Grp="18.0"/></OpInfo>
+                            <ScaOp Id="ScaOp_Identifier" Column="NumberOfRatings"><OpInfo><ScalarGroupProperties Grp="17.0"/></OpInfo>
+                            </ScaOp>
+                          </ScaOp>
+                        </AncOp>
+                      </AncOp>
+                    </PhyOp>
+                  </PhyOp>
+                  <AncOp Id="AncOp_PrjList"><OpInfo><ScalarGroupProperties Grp="25.0"/></OpInfo>
+                    <AncOp Id="AncOp_PrjEl" Column="AvgRating"><OpInfo><ScalarGroupProperties Grp="24.0"/></OpInfo>
+                      <ScaOp Id="ScaOp_Udf" Udf="Math.Round((decimal)AvgRating, 2)" UsedColumn="AvgRating"><OpInfo><ScalarGroupProperties Grp="23.0"/></OpInfo>
+                      </ScaOp>
+                    </AncOp>
+                  </AncOp>
+                </PhyOp>
+              </PhyOp>
+              <ScaOp Id="ScaOp_Comp" CompOp="x_cmpEq"><OpInfo><ScalarGroupProperties Grp="30.0"/></OpInfo>
+                <ScaOp Id="ScaOp_Identifier" Column="MovieId"><OpInfo><ScalarGroupProperties Grp="28.0"/></OpInfo>
+                </ScaOp>
+                <ScaOp Id="ScaOp_Identifier" Column="MovieId1"><OpInfo><ScalarGroupProperties Grp="29.0"/></OpInfo>
+                </ScaOp>
+              </ScaOp>
+            </PhyOp>
+          </PhyOp>
+        </PhyOp>
+      </PhyOp>
+    </PhyOp>
+</OutputTree>
+</OptimizerTrees>
+  </OptimizerPlanInfo>
+  <ScopeCounters>
+    <Counter Name="ResourcesDownloading" Value="0.0046411" Unit="second" Intervals="1" />
+    <Counter Name="Overall" Value="13.4019857" Unit="second" Intervals="1" />
+    <Counter Name="FrontEndRun" Value="3.1507812" Unit="second" Intervals="1" />
+    <Counter Name="AstBuilder" Value="2.1333224" Unit="second" Intervals="1" />
+    <Counter Name="SyntaxVerifier" Value="0.1424037" Unit="second" Intervals="1" />
+    <Counter Name="DdlResolver" Value="1.7892974" Unit="second" Intervals="1" />
+    <Counter Name="RoslynStartup" Value="0.4727448" Unit="second" Intervals="4" />
+    <Counter Name="SMS" Value="0.0670533" Unit="second" Intervals="2" />
+    <Counter Name="ReferenceLoading" Value="0.0212377" Unit="second" Intervals="1" />
+    <Counter Name="ConstantFolding" Value="0.5602436" Unit="second" Intervals="2" />
+    <Counter Name="ResourceReferencePass" Value="0.0031263" Unit="second" Intervals="1" />
+    <Counter Name="InputOutputPass" Value="0.0430379" Unit="second" Intervals="1" />
+    <Counter Name="SStreamMetadataWait" Value="4.23E-05" Unit="second" Intervals="2" />
+    <Counter Name="SStreamMetadataAsync" Value="0" Unit="second" Intervals="0" />
+    <Counter Name="BinderPass" Value="0.7605972" Unit="second" Intervals="1" />
+    <Counter Name="ExpressionBinding" Value="0.6420885" Unit="second" Intervals="9" />
+    <Counter Name="OneColumnBinding" Value="0.0045762" Unit="second" Intervals="4" />
+    <Counter Name="QualifiedColumnBinding" Value="0.0043869" Unit="second" Intervals="1" />
+    <Counter Name="SimpleAggregateBinding" Value="0" Unit="second" Intervals="0" />
+    <Counter Name="RoslynFirstCall" Value="0.2766289" Unit="second" Intervals="1" />
+    <Counter Name="RoslynBinding" Value="0.3508781" Unit="second" Intervals="5" />
+    <Counter Name="RoslynParsing" Value="0.0058756" Unit="second" Intervals="5" />
+    <Counter Name="RoslynPreSemantic" Value="0.0135112" Unit="second" Intervals="5" />
+    <Counter Name="RoslynSemantic" Value="0.1653182" Unit="second" Intervals="5" />
+    <Counter Name="RoslynPostSemantic" Value="0.1657935" Unit="second" Intervals="5" />
+    <Counter Name="SemanticAnalyzerPass" Value="0.0811999" Unit="second" Intervals="1" />
+    <Counter Name="ErrorReporterPass" Value="0.0366429" Unit="second" Intervals="1" />
+    <Counter Name="GenerateOptTreePass" Value="0.1059822" Unit="second" Intervals="1" />
+    <Counter Name="OptimizerWait" Value="1.51E-05" Unit="second" Intervals="1" />
+    <Counter Name="Optimizer" Value="0.454616" Unit="second" Intervals="1" />
+    <Counter Name="CodeGeneration" Value="0.576228" Unit="second" Intervals="1" />
+    <Counter Name="AlgebraAndManagedCodeGen" Value="0.1707365" Unit="second" Intervals="1" />
+    <Counter Name="ComputeSignature" Value="1.69E-05" Unit="second" Intervals="1" />
+    <Counter Name="PostProcessExecutionPlan" Value="0.004267" Unit="second" Intervals="1" />
+    <Counter Name="CreateSplitersOrSpools" Value="0.0006188" Unit="second" Intervals="1" />
+    <Counter Name="ReplaceFusionPipelinesWithAdapters" Value="2.4E-06" Unit="second" Intervals="1" />
+    <Counter Name="CreateWhereSelectEnumerators" Value="0.0452563" Unit="second" Intervals="1" />
+    <Counter Name="ComputePayloadMetadata" Value="0.000354" Unit="second" Intervals="1" />
+    <Counter Name="SStreamStageProcessing" Value="0.0030053" Unit="second" Intervals="1" />
+    <Counter Name="ValidateStages" Value="0.0024006" Unit="second" Intervals="1" />
+    <Counter Name="CompileToAlgebra" Value="0.050762" Unit="second" Intervals="1" />
+    <Counter Name="CreateCppReadyStage" Value="0.0099783" Unit="second" Intervals="1" />
+    <Counter Name="AdornAllWithMemoryModel" Value="0.0227237" Unit="second" Intervals="1" />
+    <Counter Name="SplitScopeVertices" Value="0.0277763" Unit="second" Intervals="1" />
+    <Counter Name="EstimateMemorySize" Value="0.0008046" Unit="second" Intervals="1" />
+    <Counter Name="CalculateBubbles" Value="0.0002101" Unit="second" Intervals="1" />
+    <Counter Name="ManagedCodeEmission" Value="0.0291692" Unit="second" Intervals="1" />
+    <Counter Name="NativeCodeGeneration" Value="0.3746054" Unit="second" Intervals="1" />
+    <Counter Name="CodeCompiling" Value="8.8394512" Unit="second" Intervals="1" />
+    <Counter Name="EmitCompilationResult" Value="0.1472328" Unit="second" Intervals="1" />
+    <Counter Name="VcClient" Value="0" Unit="second" Intervals="0" />
+    <Counter Name="SStreamSerialization" Value="0" Unit="second" Intervals="0" />
+    <Counter Name="InteractiveScopeVerification" Value="0" Unit="second" Intervals="0" />
+    <Counter Name="UserCode" Value="0" Unit="second" Intervals="0" />
+    <Counter Name="Preprocessing" Value="0" Unit="second" Intervals="0" />
+    <Counter Name="Table Files Read" Value="0" Unit="count" />
+    <Counter Name="CQO - Init" Value="0.010685361023662" Unit="second" />
+    <Counter Name="CQO - CopyIn" Value="0.0744392680229737" Unit="second" />
+    <Counter Name="CQO - Search - Init" Value="9.62645137266849E-05" Unit="second" />
+    <Counter Name="CQO - Search - NNF" Value="4.9719034562134E-05" Unit="second" />
+    <Counter Name="CQO - Search - PreOptimization" Value="0.00047285975423987" Unit="second" />
+    <Counter Name="CQO - Search - Simplification" Value="0.0378231384629272" Unit="second" />
+    <Counter Name="CQO - Search - Join Reordering" Value="0.000184771447592611" Unit="second" />
+    <Counter Name="CQO - Search - Expression Sharing" Value="0.000493311555690961" Unit="second" />
+    <Counter Name="CQO - Search - Optimization" Value="0.00257304819290703" Unit="second" />
+    <Counter Name="CQO - Search - Subtotal" Value="0.0518417905058506" Unit="second" />
+    <Counter Name="CQO - Showplan" Value="0.00386045383252654" Unit="second" />
+    <Counter Name="CQO - Stage Generation" Value="0.273935307425838" Unit="second" />
+    <Counter Name="CQO - PostOptimization" Value="0.00423810692483892" Unit="second" />
+    <Counter Name="Working Set" Value="126696" Unit="KB" />
+    <Counter Name="Peak Working Set" Value="201416" Unit="KB" />
+    <Counter Name="Private Memory" Value="105788" Unit="KB" />
+    <Counter Name="Virtual Memory" Value="767364" Unit="KB" />
+    <Counter Name="Total CPU" Value="141.25" Unit="second" />
+    <Counter Name="CQO - Total" Value="0.429421185809553" Unit="second" />
+  </ScopeCounters>
+</CSSRelatedInfo>

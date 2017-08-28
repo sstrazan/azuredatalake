@@ -1,0 +1,88 @@
+﻿{
+"CompilerPlanStart":"8\/24\/2017 12:22:00 PM"
+},
+{
+"Settings":"-c++ -mp -pdb Partial -OUTPUT_PATH C:\\Users\\slaven.strazanac\\AppData\\Local\\USQLDataRoot -cosmosCluster localhost -apEnvironment Default -apCluster localhost -Off ForceShadowCopy -On ADL -Off Sirius -On SQLIP -Off SQLIPSQLProxy -Off SQLIPSQLProxyNative -buckets 1 -SplitPartitionThreshold 52428800 -ClientVersion 10.2.2.0"
+}{
+"\/\/ Generated Code Behind HeaderCREATE ASSEMBLY [__codeBehind_xbu5twio.cem] FROM 0x4D5A9000030000":
+{
+"NodeName":"CreateAssemblyStatement"
+},
+{
+"Name":"__codeBehind_xbu5twio.cem"
+}},
+{
+"REFERENCE ASSEMBLY [__codeBehind_xbu5twio.cem]":
+{
+"NodeName":"ReferenceAssemblyStatement"
+}{
+"Name":"__codeBehind_xbu5twio.cem"
+}},
+{
+"DEPLOY RESOURCE @\"C:\\Users\\slaven.strazanac\\AppData\\Local\\Temp\\DataLakeTemp\\__codeBehind_xbu5t":
+{
+"NodeName":"ResourceStatement"
+}},
+{
+"\n\/\/ Generated Code Behind HeaderREFERENCE ASSEMBLY master.PopularMoviesCommon":
+{
+"NodeName":"ReferenceAssemblyStatement"
+}{
+"Name":"master.PopularMoviesCommon"
+}},
+{
+"\/\/USING x = PopularMoviesCommon.CustomFunctions;USING y = PopularMoviesCommon.Extractors.Movie":
+{
+"NodeName":"UsingStatement"
+}},
+{
+"DECLARE @movieRatingsFilePath = \"\/u.data\"":
+{
+"NodeName":"DeclareVariableStatement"
+}{
+"Name":"@movieRatingsFilePath"
+}},
+{
+"DECLARE @movieDataFilePath = \"\/u100k.item\"":
+{
+"NodeName":"DeclareVariableStatement"
+}{
+"Name":"@movieDataFilePath"
+}},
+{
+"    EXTRACT MovieId int,            Title string,            ReleaseDate DateTime,          ":
+{
+"NodeName":"QueryStatement"
+}},
+{
+"\t\t\tOUTPUT @moviesInfoTO \"\/moviesInfo.csv\"\/\/ORDER BY NumberOfRatings DESC FETCH 10 ROWSUSIN":
+{
+"NodeName":"OutputStatement"
+}},
+{
+"\/\/ Generated Code Behind FooterUSE DATABASE [master]":
+{
+"NodeName":"UseDatabaseStatement"
+},
+{
+"Name":"master"
+}},
+{
+"USE SCHEMA [dbo]":
+{
+"NodeName":"UseSchemaStatement"
+},
+{
+"Name":"dbo"
+}},
+{
+"DROP ASSEMBLY [__codeBehind_xbu5twio.cem]":
+{
+"NodeName":"DropAssemblyStatement"
+},
+{
+"Name":"__codeBehind_xbu5twio.cem"
+}},
+{
+"CompilerPlanEnd":"8\/24\/2017 12:22:00 PM"
+}

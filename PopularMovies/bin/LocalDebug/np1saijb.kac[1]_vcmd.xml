@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vertexCommand command="Start" jobType="None" managedMemorySize="0" vertexArg="ScopeEngine.dll -scopeVertex SV1_Extract -vertexNumber 0">
+  <inputs>
+    <input name="" path="C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\u100k.item" blockAligned="True" globalStartOffset="0" localStartOffset="0" localEndOffset="236344" length="236344" />
+  </inputs>
+  <outputs>
+    <output path="C:\Playground\DataLake\PopularMovies\PopularMovies\bin\Debug\861FB94CF0E31F25\_Temp\PopularMoviesScript.usql.Debug_2D7BBEE2315126AA\scopetmpfile._SV1_Extract_out0" isFirstOutputPiece="True" />
+  </outputs>
+</vertexCommand>
