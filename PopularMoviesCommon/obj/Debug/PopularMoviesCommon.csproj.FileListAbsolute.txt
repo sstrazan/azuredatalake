@@ -1,7 +1,0 @@
-C:\Playground\DataLake\PopularMovies\PopularMoviesCommon\bin\Debug\PopularMoviesCommon.dll
-C:\Playground\DataLake\PopularMovies\PopularMoviesCommon\bin\Debug\PopularMoviesCommon.pdb
-C:\Playground\DataLake\PopularMovies\PopularMoviesCommon\bin\Debug\Microsoft.Analytics.Interfaces.dll
-C:\Playground\DataLake\PopularMovies\PopularMoviesCommon\bin\Debug\Microsoft.Analytics.Types.dll
-C:\Playground\DataLake\PopularMovies\PopularMoviesCommon\obj\Debug\PopularMoviesCommon.csproj.CoreCompileInputs.cache
-C:\Playground\DataLake\PopularMovies\PopularMoviesCommon\obj\Debug\PopularMoviesCommon.dll
-C:\Playground\DataLake\PopularMovies\PopularMoviesCommon\obj\Debug\PopularMoviesCommon.pdb

@@ -1,4 +1,0 @@
-DEBUG|1
-STEP|1|e7b76186-b83e-4d6f-bc0a-1e1bc557a60b|1|1|1|2|2|0|C:\Playground\DataLake\PopularMovies\PopularMovies\bin\Debug\PopularMoviesScript.usql.Debug.script
-VERTEX|1|-scopeVertex SV1_Extract  -i C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\u100k.item  -o C:\Playground\DataLake\PopularMovies\PopularMovies\bin\Debug\861FB94CF0E31F25\_Temp\PopularMoviesScript.usql.Debug_2D7BBEE2315126AA\scopetmpfile._SV1_Extract_out0(WITH_HEADER)
-VERTEX|2|-concatenate -i C:\Playground\DataLake\PopularMovies\PopularMovies\bin\Debug\861FB94CF0E31F25\_Temp\PopularMoviesScript.usql.Debug_2D7BBEE2315126AA\scopetmpfile._SV1_Extract_out0 -o C:\Users\slaven.strazanac\AppData\Local\USQLDataRoot\moviesInfo.csv

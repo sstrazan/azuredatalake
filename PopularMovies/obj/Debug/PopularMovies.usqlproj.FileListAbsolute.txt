@@ -1,3 +1,0 @@
-C:\Playground\DataLake\PopularMovies\PopularMovies\bin\Debug\Algebra.xml
-C:\Playground\DataLake\PopularMovies\PopularMovies\obj\Debug\Algebra.xml
-C:\Playground\DataLake\PopularMovies\PopularMovies\obj\Debug\PopularMovies.usqlproj.CoreCompileInputs.cache

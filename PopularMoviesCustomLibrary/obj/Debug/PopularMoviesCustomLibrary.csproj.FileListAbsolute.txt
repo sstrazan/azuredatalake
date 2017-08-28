@@ -1,7 +1,0 @@
-C:\Playground\DataLake\PopularMovies\PopularMoviesCustomLibrary\bin\Debug\PopularMoviesCustomLibrary.dll
-C:\Playground\DataLake\PopularMovies\PopularMoviesCustomLibrary\bin\Debug\PopularMoviesCustomLibrary.pdb
-C:\Playground\DataLake\PopularMovies\PopularMoviesCustomLibrary\bin\Debug\Microsoft.Analytics.Interfaces.dll
-C:\Playground\DataLake\PopularMovies\PopularMoviesCustomLibrary\bin\Debug\Microsoft.Analytics.Types.dll
-C:\Playground\DataLake\PopularMovies\PopularMoviesCustomLibrary\obj\Debug\PopularMoviesCustomLibrary.dll
-C:\Playground\DataLake\PopularMovies\PopularMoviesCustomLibrary\obj\Debug\PopularMoviesCustomLibrary.pdb
-C:\Playground\DataLake\PopularMovies\PopularMoviesCustomLibrary\obj\Debug\PopularMoviesCustomLibrary.csprojResolveAssemblyReference.cache
