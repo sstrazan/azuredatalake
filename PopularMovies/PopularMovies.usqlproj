@@ -22,13 +22,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Script Include="MoviesRatings.usql" />
-    <Script Include="PopularMoviesScript.usql" />
+    <Script Include="MoviesRatings20m.usql" />
+    <Script Include="MovieTags.usql" />
     <Script Include="RatingsForMovie.usql" />
     <ScriptCode Include="MoviesRatings.usql.cs">
       <DependentUpon>MoviesRatings.usql</DependentUpon>
     </ScriptCode>
-    <ScriptCode Include="PopularMoviesScript.usql.cs">
-      <DependentUpon>PopularMoviesScript.usql</DependentUpon>
+    <ScriptCode Include="MoviesRatings20m.usql.cs">
+      <DependentUpon>MoviesRatings20m.usql</DependentUpon>
+    </ScriptCode>
+    <ScriptCode Include="MovieTags.usql.cs">
+      <DependentUpon>MovieTags.usql</DependentUpon>
     </ScriptCode>
     <ScriptCode Include="RatingsForMovie.usql.cs">
       <DependentUpon>RatingsForMovie.usql</DependentUpon>

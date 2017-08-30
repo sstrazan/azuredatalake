@@ -2,12 +2,12 @@
 DESCRIPTION:
 	This U-SQL script process 2 files containing movies rating informations 
 	(downloadable from https://grouplens.org/datasets/movielens/):
-		- u.data - tab separated file that contains 100 000 movies ratings (user id, movie id, rating, timestamp)
-		- u.item - pipe separated file that contains general movies info (movie id, title, release date, 
+		- ratings.csv - comma separated file that contains 20 000 000 movies ratings (user id, movie id, rating, timestamp)
+		- movies.csv - comma separated file that contains general movies info (movie id, title, release date, 
 					genres, ...)
-	Script process files in a way that it calculates avg. ratings for movies (from u.data) and combines 
-	this with movies general informations (from u.item)	producing comma separated file 
-	(moveisInfoWithRatings.csv) that contains combined data.
+	Script process files in a way that it calculates avg. ratings for movies (from ratings.csv) and combines 
+	this with movies general informations (from movies.csv)	producing comma separated file 
+	(moveisInfoWithRatings20m.csv) that contains combined data.
 */
 
 REFERENCE ASSEMBLY master.PopularMoviesCommon;
@@ -15,13 +15,13 @@ REFERENCE ASSEMBLY master.PopularMoviesCommon;
 USING x = PopularMoviesCommon.Helpers.CustomFunctions;
 
 DECLARE EXTERNAL @intervalBasedSubdir string = "";
-DECLARE @movieRatingsFilePath = "/moviesdata/onpremisesdata/" + @intervalBasedSubdir + "u.data";
-DECLARE @movieDataFilePath = "/moviesdata/onpremisesdata/" + @intervalBasedSubdir + "u.item";
-DECLARE @moviesRatingOutputFilePath = "/moviesdata/outputdata/" + @intervalBasedSubdir + "moviesInfoWithRatings.csv";
+DECLARE @movieRatingsFilePath = "/moviesdata/onpremisesdata/" + @intervalBasedSubdir + "ratings.csv";
+DECLARE @movieDataFilePath = "/moviesdata/onpremisesdata/" + @intervalBasedSubdir + "movies.csv";
+DECLARE @moviesRatingOutputFilePath = "/moviesdata/outputdata/" + @intervalBasedSubdir + "moviesInfoWithRatings20m.csv";
 
 /* 
 =========================================================================================================
-PART I: Extract and transform movie ratings file (u.data)
+PART I: Extract and transform movie ratings file using built in csv extractor (notice skipFirstNRows param)
 =========================================================================================================
 */ 
 
@@ -29,10 +29,10 @@ PART I: Extract and transform movie ratings file (u.data)
 @moviesRatings =
     EXTRACT UserId int,
             MovieId int,
-            Rating int,
+            Rating decimal,
 			Timestamp double
     FROM @movieRatingsFilePath
-    USING Extractors.Tsv();
+    USING Extractors.Csv(skipFirstNRows: 1);
 
 // count ratings and calculate average rating per movie (notice SQL-like syntax)
 @ratingsCountPerMovie =
@@ -51,7 +51,7 @@ PART I: Extract and transform movie ratings file (u.data)
 
 /* 
 =========================================================================================================
-PART II: Extract movies info file (u.item) using custom implemented extractor with colDelim parameter
+PART II: Extract movies info file (movies.csv) using built in csv extractor (notice skipFirstNRows param)
 =========================================================================================================
 */ 
 
@@ -59,30 +59,9 @@ PART II: Extract movies info file (u.item) using custom implemented extractor wi
 @moviesInfo =
     EXTRACT MovieId int,
             Title string,
-            ReleaseDate DateTime,
-            VideoReleaseDate DateTime?,
-            IMDbURL string,
-            GenreUnknown bool,
-            GenreAction bool,
-            GenreAdventure bool,
-            GenreAnimation bool,
-            GenreChildrens bool,
-            GenreComedy bool,
-            GenreCrime bool,
-            GenreDocumentary bool,
-            GenreDrama bool,
-            GenreFantasy bool,
-            GenreNoire bool,
-            GenreHorror bool,
-            GenreMusical bool,
-            GenreMystery bool,
-            GenreRomance bool,
-            GenreSciFi bool,
-            GenreThriller bool,
-            GenreWar bool,
-            GenreWestern bool
+			Genres string
     FROM @movieDataFilePath
-    USING new PopularMoviesCommon.Extractors.MoviesInfoExtractor(colDelim: '|');
+    USING Extractors.Csv(skipFirstNRows: 1);
 
 /* 
 =========================================================================================================
@@ -91,7 +70,7 @@ PART III: Join extracted movies info data with calculated avg. ratings (notice x
 */ 
 @moviesInfoWithRatings =
     SELECT i.MovieId AS InfoMovieId, 
-		   x.UpperMe(i.Title) AS Title , 
+		   x.UpperMe(i.Title) AS Title, 
 		   r.NumberOfRatings, 
 		   r.AvgRating
     FROM @moviesInfo AS i
@@ -106,7 +85,7 @@ PART III: Join extracted movies info data with calculated avg. ratings (notice x
 
 /* 
 =========================================================================================================
-PART IV: Output combined data to csv file (moviesInfoWithRatings.csv) using built in csv outputter
+PART IV: Output combined data to csv file (moviesInfoWithRatings20m.csv) using built in csv outputter
 =========================================================================================================
 */ 
 OUTPUT @moviesInfoWithRatings

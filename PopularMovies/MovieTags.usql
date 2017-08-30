@@ -1,0 +1,100 @@
+﻿/*
+DESCRIPTION:
+	This U-SQL script process 2 files containing free text movie tagging and general movie info 
+	(downloadable from https://grouplens.org/datasets/movielens/):
+		- tags.csv - comma separated file that contains free text tags entered by users for particular movies (userId, movieId, tag, timestamp)
+		- movies.csv - comma separated file that contains general movies info (movie id, title, release date, 
+					genres, ...)
+	Script process tags.csv to find which tag for each movie is entered moste frequently. 
+	It then extract movies.csv in order find title for each movie and then joins tags information with movie title.
+	At the end script produces comma separated file (moviesTags.csv) which contains movie titles and most frequently
+	used tag for each movie.
+*/
+
+DECLARE EXTERNAL @intervalBasedSubdir string = "";
+DECLARE @moviesTagsFilePath = "/moviesdata/onpremisesdata/" + @intervalBasedSubdir + "tags.csv";
+DECLARE @movieDataFilePath = "/moviesdata/onpremisesdata/" + @intervalBasedSubdir + "movies.csv";
+DECLARE @moviesTagsOutputFilePath = "/moviesdata/outputdata/" + @intervalBasedSubdir + "moviesTags.csv";
+
+/* 
+=========================================================================================================
+PART I: Extract movie tags file
+=========================================================================================================
+*/ 
+
+// extract all tags
+@moviesTags =
+    EXTRACT UserId int,
+            MovieId int,
+            Tag string,
+			Timestamp double
+    FROM @moviesTagsFilePath
+    USING Extractors.Csv(skipFirstNRows: 1);
+
+// group by movie id and tag to find how many times each tag is used for each movie
+@tagsForMovies =
+    SELECT MovieId,
+		   Tag,
+           COUNT(*) AS NumberOfThisTag
+    FROM @moviesTags
+    GROUP BY MovieId, Tag;
+
+// use function ROW_NUMBER() to rank each tag over partion of each movie
+@tagsForMovies =
+    SELECT MovieId,
+           Tag,
+           NumberOfThisTag,
+           ROW_NUMBER() OVER(PARTITION BY MovieId ORDER BY NumberOfThisTag DESC) AS TagRank
+    FROM @tagsForMovies;
+
+// select row containing tag with highest rank
+@tagsForMovies =
+    SELECT MovieId,
+		   Tag,
+		   NumberOfThisTag,
+		   TagRank
+    FROM @tagsForMovies
+    WHERE TagRank == 1;
+/* 
+=========================================================================================================
+PART II: Extract movies info file (movies.csv) using built in csv extractor
+=========================================================================================================
+*/ 
+
+//extract movies info
+@moviesInfo =
+    EXTRACT MovieId int,
+            Title string,
+			Genres string
+    FROM @movieDataFilePath
+    USING Extractors.Csv(skipFirstNRows: 1);
+
+/* 
+=========================================================================================================
+PART III: Join processed tags records with movies general info
+=========================================================================================================
+*/
+@movieTagsWithInfo =
+    SELECT t.MovieId AS MovieId,
+           i.Title AS Title,
+           t.Tag,
+           t.NumberOfThisTag,
+		   t.TagRank
+    FROM @tagsForMovies AS t
+         INNER JOIN
+         (
+         SELECT MovieId AS MovieId,
+                Title AS Title
+         FROM @moviesInfo
+               ) AS i
+         ON t.MovieId == i.MovieId;
+
+/* 
+=========================================================================================================
+PART IV: Output combined data to csv file (moviesTags.csv)
+=========================================================================================================
+*/ 
+OUTPUT @movieTagsWithInfo
+TO @moviesTagsOutputFilePath
+ORDER BY MovieId
+USING Outputters.Csv();
