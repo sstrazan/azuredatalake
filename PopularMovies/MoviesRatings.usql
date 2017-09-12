@@ -91,7 +91,7 @@ PART III: Join extracted movies info data with calculated avg. ratings (notice x
 */ 
 @moviesInfoWithRatings =
     SELECT i.MovieId AS InfoMovieId, 
-		   x.UpperMe(i.Title) AS Title , 
+		   x.UpperMe(i.Title) AS Title, 
 		   r.NumberOfRatings, 
 		   r.AvgRating
     FROM @moviesInfo AS i

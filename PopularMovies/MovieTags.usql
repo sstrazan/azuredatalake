@@ -39,7 +39,7 @@ PART I: Extract movie tags file
     FROM @moviesTags
     GROUP BY MovieId, Tag;
 
-// use function ROW_NUMBER() to rank each tag over partion of each movie
+// use ROW_NUMBER() to rank each tag over partion of each movie
 @tagsForMovies =
     SELECT MovieId,
            Tag,

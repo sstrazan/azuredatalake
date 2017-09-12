@@ -1,0 +1,11 @@
+﻿@moviesRatings =
+    EXTRACT UserId int,
+            MovieId int,
+            Rating int,
+			Timestamp double
+    FROM @"/moviesdata/inputdata/u.data"
+    USING Extractors.Tsv();
+
+OUTPUT @moviesRatings 
+    TO @"/moviesdata/inputdata/u_csv.data"
+    USING Outputters.Csv();

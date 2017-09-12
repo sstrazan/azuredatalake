@@ -21,10 +21,14 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Script Include="FirstUSQLScript.usql" />
     <Script Include="MoviesRatings.usql" />
     <Script Include="MoviesRatings20m.usql" />
     <Script Include="MovieTags.usql" />
     <Script Include="RatingsForMovie.usql" />
+    <ScriptCode Include="FirstUSQLScript.usql.cs">
+      <DependentUpon>FirstUSQLScript.usql</DependentUpon>
+    </ScriptCode>
     <ScriptCode Include="MoviesRatings.usql.cs">
       <DependentUpon>MoviesRatings.usql</DependentUpon>
     </ScriptCode>
